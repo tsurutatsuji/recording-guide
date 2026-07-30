@@ -111,9 +111,9 @@
 <h1>How to Record<span id="who"></span></h1>
 <p class="sub">Short POV clips of everyday tasks. One page — read it once, then start.</p>
 
-<div class="due">
+<div class="due" id="dueBox" hidden>
   <div class="lab">Delivery deadline</div>
-  <div class="val" id="due">Wednesday, 5 August 2026</div>
+  <div class="val" id="due"></div>
   <div class="note">The recording itself is about 30–40 minutes of work in total. If this date does not work for you, tell me now and we will agree on another one.</div>
 </div>
 
@@ -304,7 +304,10 @@
   if (name) document.getElementById("who").textContent = " — " + name;
 
   var due = q.get("due");
-  if (due) document.getElementById("due").textContent = due;
+  if (due) {
+    document.getElementById("due").textContent = due;
+    document.getElementById("dueBox").hidden = false;
+  }
 
   var tasks = q.get("tasks");
   if (tasks) {
