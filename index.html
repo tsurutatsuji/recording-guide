@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>How to Record — POV Task Clips</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#1a1a1a; --muted:#5f6b7a; --line:#e2e6ec;
+    --card:#f7f9fb; --accent:#c2410c; --ok:#15803d; --bad:#b91c1c;
+    --hl:#fff4e5;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#14171a; --fg:#e8eaed; --muted:#9aa4b2; --line:#2a3138;
+      --card:#1c2126; --accent:#fb923c; --ok:#4ade80; --bad:#f87171;
+      --hl:#2a2118;
+    }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; padding:0 18px 64px;
+    background:var(--bg); color:var(--fg);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    max-width:720px; margin-inline:auto;
+  }
+  h1{font-size:23px; line-height:1.3; margin:26px 0 4px}
+  h2{font-size:19px; margin:38px 0 12px; padding-bottom:7px; border-bottom:2px solid var(--line)}
+  h3{font-size:16px; margin:22px 0 8px}
+  p,li{font-size:16px}
+  ul,ol{padding-left:22px; margin:10px 0}
+  li{margin:6px 0}
+  small{color:var(--muted); font-size:14px}
+  code{background:var(--card); padding:2px 6px; border-radius:4px; font-size:14px;
+       font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; word-break:break-all}
+
+  .sub{color:var(--muted); margin:0 0 22px; font-size:15px}
+
+  .due{
+    background:var(--hl); border:2px solid var(--accent); border-radius:10px;
+    padding:14px 16px; margin:18px 0 26px;
+  }
+  .due .lab{font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); font-weight:700}
+  .due .val{font-size:21px; font-weight:700; margin-top:3px}
+  .due .note{font-size:14px; color:var(--muted); margin-top:6px}
+
+  .three{list-style:none; padding:0; margin:14px 0 0; counter-reset:t}
+  .three li{
+    counter-increment:t; position:relative; padding:15px 15px 15px 58px;
+    background:var(--card); border:1px solid var(--line); border-radius:10px;
+    margin-bottom:10px; font-size:17px; font-weight:600; line-height:1.45;
+  }
+  .three li::before{
+    content:counter(t); position:absolute; left:15px; top:13px;
+    width:29px; height:29px; border-radius:50%; background:var(--accent);
+    color:#fff; font-size:15px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .card{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin:16px 0}
+
+  figure{margin:18px 0}
+  svg{width:100%; height:auto; display:block}
+  figcaption{color:var(--muted); font-size:14px; margin-top:8px; text-align:center}
+
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:15px}
+  th,td{text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+  th{color:var(--muted); font-weight:600; font-size:14px}
+  td.k{white-space:nowrap; color:var(--muted)}
+
+  .verdict{border-left:4px solid var(--line); padding:10px 0 10px 14px; margin:12px 0}
+  .verdict.g{border-color:var(--ok)}
+  .verdict.b{border-color:var(--bad)}
+  .verdict b{display:block; font-size:15px}
+  .verdict.g b{color:var(--ok)}
+  .verdict.b b{color:var(--bad)}
+  .verdict span{font-size:15px; color:var(--muted)}
+
+  .warn{border:2px solid var(--bad); border-radius:10px; padding:14px 16px; margin:18px 0}
+  .warn h3{margin-top:0; color:var(--bad)}
+
+  .never li{list-style:none; position:relative; padding-left:26px}
+  .never li::before{content:"\00d7"; position:absolute; left:4px; color:var(--bad); font-weight:700; font-size:19px; line-height:1.35}
+  .never{padding-left:0}
+
+  fieldset{border:1px solid var(--line); border-radius:10px; margin:16px 0; padding:6px 14px 12px}
+  legend{font-size:14px; font-weight:700; color:var(--accent); letter-spacing:.04em; text-transform:uppercase; padding:0 6px}
+  label.ck{display:flex; gap:12px; align-items:flex-start; padding:11px 2px; border-bottom:1px solid var(--line); cursor:pointer; font-size:15.5px}
+  label.ck:last-child{border-bottom:0}
+  label.ck input{width:22px; height:22px; margin:1px 0 0; flex:0 0 auto; accent-color:var(--accent)}
+  label.ck input:checked + span{color:var(--muted); text-decoration:line-through}
+
+  .reset{background:none; border:1px solid var(--line); color:var(--muted);
+         border-radius:8px; padding:9px 14px; font-size:14px; margin-top:6px; cursor:pointer}
+
+  .steps{counter-reset:s; list-style:none; padding:0}
+  .steps li{counter-increment:s; position:relative; padding-left:34px; margin:12px 0}
+  .steps li::before{
+    content:counter(s); position:absolute; left:0; top:1px;
+    width:24px; height:24px; border-radius:50%; border:2px solid var(--accent);
+    color:var(--accent); font-size:13px; font-weight:700;
+    display:flex; align-items:center; justify-content:center;
+  }
+  footer{margin-top:44px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:14px}
+</style>
+</head>
+<body>
+
+<h1>How to Record<span id="who"></span></h1>
+<p class="sub">Short POV clips of everyday tasks. One page — read it once, then start.</p>
+
+<div class="due">
+  <div class="lab">Delivery deadline</div>
+  <div class="val" id="due">Wednesday, 5 August 2026</div>
+  <div class="note">The recording itself is about 30–40 minutes of work in total. If this date does not work for you, tell me now and we will agree on another one.</div>
+</div>
+
+<h2>You only need to remember 3 things</h2>
+<ol class="three">
+  <li>Phone on your head, tilted down</li>
+  <li>Hands always in frame — face never in frame</li>
+  <li>One task = one video = 20–30 seconds</li>
+</ol>
+<p><small>Everything below is only detail for these three.</small></p>
+
+<h2>1. The angle</h2>
+<p>This is the part that decides whether a clip is usable. Put on the head strap and tilt the phone <b>downward about 30–45&deg;</b> — roughly the angle you look at your own hands when working at a table.</p>
+
+<figure>
+<svg viewBox="0 0 460 250" role="img" aria-label="Diagram of correct camera angle">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+    </marker>
+  </defs>
+  <g stroke="currentColor" fill="none" stroke-width="2">
+    <circle cx="105" cy="52" r="26"/>
+    <path d="M105 78 L105 150"/>
+    <path d="M105 96 L72 128 M105 96 L138 128"/>
+  </g>
+  <rect x="122" y="36" width="34" height="21" rx="4" fill="var(--accent)"/>
+  <text x="139" y="30" font-size="12" fill="var(--accent)" text-anchor="middle" font-weight="700">phone</text>
+  <g stroke="var(--accent)" stroke-width="2.5" fill="none" marker-end="url(#ar)" color="var(--accent)">
+    <path d="M148 57 L262 152"/>
+  </g>
+  <path d="M148 57 L268 57" stroke="currentColor" stroke-width="1" stroke-dasharray="4 4" opacity=".45" fill="none"/>
+  <path d="M196 57 A48 48 0 0 1 186 91" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
+  <text x="214" y="82" font-size="13" fill="var(--accent)" font-weight="700">30–45&deg;</text>
+  <rect x="238" y="160" width="190" height="14" rx="3" fill="currentColor" opacity=".22"/>
+  <text x="333" y="196" font-size="13" fill="currentColor" text-anchor="middle" opacity=".75">your hands + the object</text>
+  <text x="333" y="216" font-size="12.5" fill="var(--accent)" text-anchor="middle" font-weight="700">this must fill the frame</text>
+</svg>
+<figcaption>Tilt down 30–45&deg;. Not straight ahead, not straight down.</figcaption>
+</figure>
+
+<div class="verdict b"><b>Too high</b><span>You see the wall and the ceiling. Your hands are at the bottom edge or missing.</span></div>
+<div class="verdict b"><b>Too low</b><span>You see mostly your feet or the floor right under you.</span></div>
+<div class="verdict g"><b>Correct</b><span>Both hands and the object are clearly visible, near the middle of the frame.</span></div>
+
+<div class="card">
+<h3>The 10-second test — do this once before the real recording</h3>
+<ol class="steps">
+  <li>Put on the strap and stand where you will work.</li>
+  <li>Record 5 seconds while you touch the object with both hands.</li>
+  <li>Play it back and ask: can I see <b>both hands and the object</b> clearly?</li>
+  <li><b>Yes</b> &rarr; the angle is right. Keep it for all 4 videos.<br><b>No</b> &rarr; adjust the tilt and test again.</li>
+</ol>
+<p><small>This test takes 10 seconds. Re-recording four clips takes 40 minutes. Please do the test.</small></p>
+</div>
+
+<h2>2. Phone settings</h2>
+<table>
+  <tr><td class="k">Resolution</td><td><b>1920 &times; 1080</b> &nbsp;<small>(shown as “1080p” or “FHD”)</small></td></tr>
+  <tr><td class="k">Frame rate</td><td><b>30 fps</b></td></tr>
+  <tr><td class="k">Format</td><td><b>MP4</b></td></tr>
+  <tr><td class="k">Zoom</td><td>Do not zoom. Leave it at 1&times;.</td></tr>
+  <tr><td class="k">Stabiliser</td><td>ON, if your phone has it</td></tr>
+  <tr><td class="k">Audio</td><td>Not needed. If your phone records it, that is fine — we remove it.</td></tr>
+</table>
+
+<h2>3. Your 4 tasks</h2>
+<div id="tasks" class="card">
+  <p style="margin:0">Your 4 assigned tasks are in the chat message I sent you. <b>Each person gets a different set</b>, so please use the list in your message, not someone else's.</p>
+</div>
+<p>For every video:</p>
+<ul>
+  <li>Start recording <b>before</b> you touch anything.</li>
+  <li>Do the task from beginning to end.</li>
+  <li>Stop recording <b>after</b> the task is finished.</li>
+  <li><b>20–30 seconds.</b> Not 5 seconds. Not 2 minutes.</li>
+</ul>
+<p><small>If one of your tasks is not possible in your home, message me before you start and I will swap it.</small></p>
+
+<h2>4. Keep the same / change</h2>
+<table>
+  <tr><th style="width:50%">Keep the same in all 4 videos</th><th>Change between videos</th></tr>
+  <tr>
+    <td>
+      The phone angle and position<br>
+      The camera settings<br>
+      The way you do the task (same order of movements)
+    </td>
+    <td>
+      The room or the place<br>
+      The objects and tools you use<br>
+      How things are arranged on the surface
+    </td>
+  </tr>
+</table>
+<p><small><b>Why:</b> we need the <b>same viewpoint</b> looking at <b>different things</b>. If the viewpoint changes too, the clips cannot be compared with each other.</small></p>
+
+<h2>5. Never record</h2>
+<ul class="never">
+  <li>Faces — yours or anyone else's</li>
+  <li>Other people</li>
+  <li>Documents, letters, screens, name tags, ID cards</li>
+  <li>Anything showing your address or personal details</li>
+</ul>
+<p><small>If a face appears by accident, just record that clip again. It is not a problem.</small></p>
+
+<h2>6. Light</h2>
+<div class="verdict g"><b>Good</b><span>Bright enough that your hands and the object are clearly visible.</span></div>
+<div class="verdict b"><b>Bad</b><span>A bright window directly behind you — your hands turn into a dark shape.</span></div>
+<p><small>If it looks dark on the screen, turn on a light or move to a brighter spot.</small></p>
+
+<h2>7. How to send</h2>
+<ol class="steps">
+  <li>Upload the 4 videos to <b>Google Drive</b>. <small>(Dropbox, Mega or WeTransfer also fine. Drive is easiest — it is already on your phone and gives you 15&nbsp;GB free.)</small></li>
+  <li>Set the sharing to <b>“anyone with the link can view”</b>.</li>
+  <li>Paste the link in our chat, and fill in the submission form I send you.</li>
+</ol>
+<p><small>Please do not attach the videos in the chat directly — about 250&nbsp;MB in total, it will fail.</small></p>
+
+<div class="warn">
+<h3>Do not send through WhatsApp</h3>
+<p style="margin:0 0 10px">WhatsApp <b>re-compresses every video</b> it sends. The resolution and the fine detail are destroyed and the clip becomes unusable for us — even though it still looks fine on your screen.</p>
+<p style="margin:0 0 10px">The same happens if Google Photos is set to <b>“Storage saver”</b> instead of “Original quality”.</p>
+<p style="margin:0 0 10px">Please upload the <b>original file</b> straight from your gallery or camera folder.</p>
+<p style="margin:0"><b>How to check:</b> a 30-second 1080p / 30&nbsp;fps clip should be roughly <b>50–80&nbsp;MB</b>. If your file is only 5–15&nbsp;MB, it has been compressed somewhere — please upload the original instead.</p>
+</div>
+
+<h2>8. Checklist</h2>
+<p><small>Tap to tick. Your ticks are saved on this phone, so you can close the page and come back.</small></p>
+
+<fieldset>
+<legend>Before you record</legend>
+<label class="ck"><input type="checkbox" data-ck="b1"><span>Head strap on, phone tilted down 30–45&deg;</span></label>
+<label class="ck"><input type="checkbox" data-ck="b2"><span>1080p / 30&nbsp;fps / MP4 set, zoom at 1&times;</span></label>
+<label class="ck"><input type="checkbox" data-ck="b3"><span>10-second test done — both hands visible</span></label>
+<label class="ck"><input type="checkbox" data-ck="b4"><span>Room is bright, no strong light behind me</span></label>
+</fieldset>
+
+<fieldset>
+<legend>For each of the 4 videos</legend>
+<label class="ck"><input type="checkbox" data-ck="e1"><span>One task, start to finish</span></label>
+<label class="ck"><input type="checkbox" data-ck="e2"><span>20–30 seconds long</span></label>
+<label class="ck"><input type="checkbox" data-ck="e3"><span>Both hands visible the whole time</span></label>
+<label class="ck"><input type="checkbox" data-ck="e4"><span>No face, no other people</span></label>
+<label class="ck"><input type="checkbox" data-ck="e5"><span>Different room <b>or</b> different objects than the previous video</span></label>
+<label class="ck"><input type="checkbox" data-ck="e6"><span>Same angle as the previous video</span></label>
+</fieldset>
+
+<fieldset>
+<legend>Before you send</legend>
+<label class="ck"><input type="checkbox" data-ck="s1"><span>4 video files</span></label>
+<label class="ck"><input type="checkbox" data-ck="s2"><span>Filenames like <code>wiping_kitchen_01.mp4</code></span></label>
+<label class="ck"><input type="checkbox" data-ck="s3"><span>Original files — not sent through WhatsApp</span></label>
+<label class="ck"><input type="checkbox" data-ck="s4"><span>Each clip is roughly 50–80&nbsp;MB</span></label>
+<label class="ck"><input type="checkbox" data-ck="s5"><span>Uploaded to Google Drive</span></label>
+<label class="ck"><input type="checkbox" data-ck="s6"><span>Link set to “anyone with the link can view”</span></label>
+<label class="ck"><input type="checkbox" data-ck="s7"><span>Link pasted in the chat and form filled in</span></label>
+</fieldset>
+
+<button class="reset" id="reset" type="button">Clear all ticks</button>
+
+<h2>9. If something goes wrong</h2>
+<table>
+  <tr><td class="k">Blurry, too dark, face appeared, too short</td><td>Just record that one again. No problem at all.</td></tr>
+  <tr><td class="k">Cannot do one of the 4 tasks at home</td><td>Message me — I will swap it.</td></tr>
+  <tr><td class="k">No head strap on the day</td><td>Message me <b>before</b> recording. Please do not hand-hold the phone: a hand-held video is not a first-person view and cannot be used.</td></tr>
+  <tr><td class="k">Anything unclear</td><td>Ask me. Asking costs nothing — re-recording costs your time.</td></tr>
+</table>
+
+<h2>10. One last request</h2>
+<p>This batch is mainly a test of <b>whether my instructions are clear</b>, not a test of you. So when you deliver, please tell me:</p>
+<ul>
+  <li>Which instruction was <b>hardest to follow</b>, and why</li>
+  <li>Whether you had to <b>re-record</b> anything, and why</li>
+  <li>Anything that was <b>unclear or missing</b> on this page</li>
+</ul>
+<p>Be blunt. Those answers are as valuable to me as the videos.</p>
+
+<footer>
+  Thank you. If anything on this page is unclear, message me before you record.
+</footer>
+
+<script>
+(function(){
+  var q = new URLSearchParams(location.search);
+
+  var name = q.get("name");
+  if (name) document.getElementById("who").textContent = " — " + name;
+
+  var due = q.get("due");
+  if (due) document.getElementById("due").textContent = due;
+
+  var tasks = q.get("tasks");
+  if (tasks) {
+    var list = tasks.split("|").map(function(t){ return t.trim(); }).filter(Boolean);
+    if (list.length) {
+      var box = document.getElementById("tasks");
+      var ol = document.createElement("ol");
+      ol.style.margin = "0";
+      list.forEach(function(t){
+        var li = document.createElement("li");
+        li.style.fontWeight = "600";
+        li.textContent = t;
+        ol.appendChild(li);
+      });
+      box.innerHTML = "";
+      box.appendChild(ol);
+    }
+  }
+
+  var KEY = "rec-guide-checks";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+
+  var boxes = document.querySelectorAll('input[data-ck]');
+  boxes.forEach(function(b){
+    if (state[b.dataset.ck]) b.checked = true;
+    b.addEventListener("change", function(){
+      state[b.dataset.ck] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+    });
+  });
+
+  document.getElementById("reset").addEventListener("click", function(){
+    boxes.forEach(function(b){ b.checked = false; });
+    state = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>
